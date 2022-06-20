@@ -59,7 +59,7 @@ func loggingMiddleware(next http.Handler) http.Handler {
 
 // CreateIndex creates an index from a flat directory
 func (s *RepoServer) CreateIndex() error {
-	url := fmt.Sprintf("https://%s:%d/charts", s.Config.Host, s.Config.Port)
+	url := fmt.Sprintf("https://%s/charts", s.Config.Host)
 	index, err := repo.IndexDirectory(filepath.Clean(s.Config.RepoDir), url)
 	if err != nil {
 		return err
@@ -100,6 +100,10 @@ func (s *RepoServer) PackageCharts() error {
 // packageChart packages a sgingle helm chart from source directory
 func packageChart(src string, dst string, chartVersion string) (string, error) {
 	ch, err := loader.LoadDir(src)
+	if err != nil {
+		return "", fmt.Errorf("failed to load: %w", err)
+	}
+
 	ch.Metadata.Version = chartVersion
 	name, err := chartutil.Save(ch, dst)
 	if err != nil {

@@ -21,10 +21,8 @@ import (
 	"k8s.io/client-go/rest"
 )
 
-var (
-	// errFlagParameterEmpty        = errors.New("flag parameter empty")
-	errFlagParameterIllegalValue = errors.New("flag parameter illegal value")
-)
+// errFlagParameterEmpty        = errors.New("flag parameter empty")
+var errFlagParameterIllegalValue = errors.New("flag parameter illegal value")
 
 func parseFlags() (*repo.RepoConfig, error) {
 	repoConfig := &repo.RepoConfig{
@@ -70,7 +68,7 @@ func initKubeClient() (dynamic.Interface, error) {
 }
 
 func getRouteDomain(dynClient dynamic.Interface) (string, error) {
-	var ingressControllerResource = schema.GroupVersionResource{Group: "operator.openshift.io", Version: "v1", Resource: "ingresscontrollers"}
+	ingressControllerResource := schema.GroupVersionResource{Group: "operator.openshift.io", Version: "v1", Resource: "ingresscontrollers"}
 	defaultIngressController, err := dynClient.Resource(ingressControllerResource).Namespace("openshift-ingress-operator").Get(context.TODO(), "default", metav1.GetOptions{})
 	if err != nil {
 		return "", err
@@ -113,7 +111,13 @@ func doMain() int {
 		return 1
 	}
 
-	repoConfig.Host = routeDomain
+	namespace, found := os.LookupEnv("POD_NAMESPACE")
+	if !found {
+		log.Printf("environment variable %s not found", "POD_NAMESPACE")
+		return 1
+	}
+
+	repoConfig.Host = "hub-of-hubs-repo-" + namespace + "." + routeDomain
 
 	repoServer, err := repo.NewRepoServer(repoConfig)
 	if err != nil {
