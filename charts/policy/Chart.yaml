@@ -1,5 +1,0 @@
-apiVersion: v1
-name: policy
-description: Helm chart of Governance Policy in Red Hat Advanced Cluster Management for Kubernetes 
-version: 2.5.0
-appVersion: "2.5.0"
