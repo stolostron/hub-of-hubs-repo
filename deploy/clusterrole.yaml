@@ -1,0 +1,13 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: hub-of-hubs-repo
+rules:
+- apiGroups:
+  - "operator.openshift.io"
+  resources:
+  - ingresscontrollers
+  verbs:
+  - get
+  - list
+  - watch

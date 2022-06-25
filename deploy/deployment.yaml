@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -27,67 +26,3 @@ spec:
                 fieldRef:
                  apiVersion: v1
                  fieldPath: metadata.namespace
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: hub-of-hubs-repo
-  labels:
-    name: hub-of-hubs-repo
-    service: hub-of-hubs-repo
-spec:
-  ports:
-  - port: 3000
-    name: http
-  selector:
-    name: hub-of-hubs-repo
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: hub-of-hubs-repo
-subjects:
-- kind: ServiceAccount
-  name: hub-of-hubs-repo
-  namespace: open-cluster-management
-roleRef:
-  kind: ClusterRole
-  name: hub-of-hubs-repo
-  apiGroup: rbac.authorization.k8s.io
----
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: hub-of-hubs-repo
-rules:
-- apiGroups:
-  - "operator.openshift.io"
-  resources:
-  - ingresscontrollers
-  verbs:
-  - get
-  - list
-  - watch
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: hub-of-hubs-repo
----
-apiVersion: route.openshift.io/v1
-kind: Route
-metadata:
-  name: hub-of-hubs-repo
-  labels:
-    name: hub-of-hubs-repo
-spec:
-  port:
-    targetPort: http
-  tls:
-    insecureEdgeTerminationPolicy: Redirect
-    termination: edge
-  to:
-    kind: Service
-    name: hub-of-hubs-repo
-    weight: 100
-  wildcardPolicy: None

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hub-of-hubs-repo
+  labels:
+    name: hub-of-hubs-repo
+    service: hub-of-hubs-repo
+spec:
+  ports:
+  - port: 3000
+    name: http
+  selector:
+    name: hub-of-hubs-repo
