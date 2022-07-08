@@ -28,13 +28,13 @@ func parseFlags() (*repo.RepoConfig, error) {
 	repoConfig := &repo.RepoConfig{
 		ChartDir: "./charts/",
 		RepoDir:  "/repo/charts",
-		Version:  "2.5.0",
+		Version:  "2.5.1",
 		Port:     3000,
 	}
 
 	pflag.StringVar(&repoConfig.ChartDir, "chart-dir", "./charts/", "directory of reading charts from.")
 	pflag.StringVar(&repoConfig.RepoDir, "repo-dir", "/repo/charts", "directory of writing helm charts to.")
-	pflag.StringVar(&repoConfig.Version, "version", "2.5.0", "version of helm charts.")
+	pflag.StringVar(&repoConfig.Version, "version", "2.5.1", "version of helm charts.")
 	// pflag.StringVar(&repoConfig.Host, "host", "", "The host for the helm chart repo.")
 	pflag.IntVar(&repoConfig.Port, "port", 3000, "The port for the helm chart repo.")
 
