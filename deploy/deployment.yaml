@@ -15,7 +15,7 @@ spec:
       serviceAccountName: hub-of-hubs-repo
       containers:
         - name: hub-of-hubs-repo
-          image: ${REGISTRY}/hub-of-hubs-repo:${IMAGE_TAG}
+          image: quay.io/open-cluster-management-hub-of-hubs/hub-of-hubs-repo:latest
           imagePullPolicy: Always
           args: []
           ports:
